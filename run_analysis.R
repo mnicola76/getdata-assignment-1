@@ -2,16 +2,16 @@ library(reshape2)
 
 ## 1. Merge the training and the test sets to create one data set
 ## 1.1 Read and Append Text X, Test Y & Test Subject into a single dataframe
-test_X <- read.table('UCI HAR Dataset/test/X_test.txt')
-test_Y <- read.table('UCI HAR Dataset/test/y_test.txt')
-test_subject <- read.table('UCI HAR Dataset/test/subject_test.txt')
+test_X <- read.table('./UCI HAR Dataset/test/X_test.txt')
+test_Y <- read.table('./UCI HAR Dataset/test/y_test.txt')
+test_subject <- read.table('./UCI HAR Dataset/test/subject_test.txt')
 
 test_complete <- cbind(test_subject, test_Y, test_X)
 
 ## 1.2 Read and Append Train X, Train Y & Train Subject into a single dataframe
-train_X <- read.table('UCI HAR Dataset/train/X_train.txt')
-train_Y <- read.table('UCI HAR Dataset/train/y_train.txt')
-train_subject <- read.table('UCI HAR Dataset/train/subject_train.txt')
+train_X <- read.table('./UCI HAR Dataset/train/X_train.txt')
+train_Y <- read.table('./UCI HAR Dataset/train/y_train.txt')
+train_subject <- read.table('./UCI HAR Dataset/train/subject_train.txt')
 
 train_complete <- cbind(train_subject, train_Y, train_X)
 
@@ -19,7 +19,7 @@ train_complete <- cbind(train_subject, train_Y, train_X)
 data_complete <- rbind(test_complete, train_complete)
 
 ## 1.4 Read in the features list to use as the column headers
-features <- read.table('UCI HAR Dataset/features.txt')
+features <- read.table('./UCI HAR Dataset/features.txt')
 features <- as.vector(features[,2]) #cast to vector of character strings
 features <- c('subjectid', 'activitycode', features) 
 ## Set features to be the column names of our complete dataframe
@@ -32,7 +32,7 @@ data_complete_subset <-
 
 ## 3. Uses descriptive activity names to name the activities in the data set
 ##    Read in activities list and merge to include descriptors 
-activities <- read.table('UCI HAR Dataset/activity_labels.txt')
+activities <- read.table('./UCI HAR Dataset/activity_labels.txt')
 names(activities) <- c('activitycode', 'activitylabel')
 tidy_data <- merge(activities, 
                    data_complete_subset, 
@@ -57,8 +57,6 @@ tidy_final <- dcast(tidy_summary,
 
 ## Write out final tidy data set
 write.table(tidy_final, 'tidy_dataset.txt', sep="\t", row.names = F)
-
-write.table(names(tidy_final), 'data_cookbook.txt')
 
 ## Cleanup
 rm(list=c('test_X', 
